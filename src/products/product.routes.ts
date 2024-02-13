@@ -21,7 +21,7 @@ productRouter.get('/products', async (req : Request, res : Response) => {
 
 productRouter.get("/product/:id", async (req : Request, res : Response) => {
     try {
-        const product = await database.findOne(req.params.id)
+        const product : UnitProduct = await database.findOne(req.params.id)
 
         if (!product) {
             return res.status(StatusCodes.NOT_FOUND).json({error : "Product does not exist"})
@@ -36,10 +36,10 @@ productRouter.get("/product/:id", async (req : Request, res : Response) => {
 
 productRouter.post("/product", async (req : Request, res : Response) => {
     try {
-        const {name, price, quantity, image} = req.body
+        const { name, price, quantity, image } = req.body
 
         if (!name || !price || !quantity || !image) {
-            return res.status(StatusCodes.BAD_REQUEST).json({error : `Please provide all the requires parameters..`})
+            return res.status(StatusCodes.BAD_REQUEST).json({error : `Please provide all the required parameters..`})
         }
         const newProduct = await database.create({...req.body})
         return res.status(StatusCodes.CREATED).json({newProduct})
